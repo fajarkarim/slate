@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Qlue_Gopay API Reference</title>
+    <title>Qlue Park Logs API Reference</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -226,16 +226,16 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
-            <a href="#customer" class="toc-h1 toc-link" data-title="Customer">Customer</a>
+            <a href="#backup" class="toc-h1 toc-link" data-title="Backup">Backup</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-user-and-update-database-local" class="toc-h2 toc-link" data-title="Customer">Get User and update database local</a>
+                    <a href="#create-backups" class="toc-h2 toc-link" data-title="Backup">Create Backups</a>
                   </li>
                   <li>
-                    <a href="#check-in-customer" class="toc-h2 toc-link" data-title="Customer">Check In Customer</a>
+                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Backup">Get a Specific Kitten</a>
                   </li>
                   <li>
-                    <a href="#check-out-customer" class="toc-h2 toc-link" data-title="Customer">Check Out Customer</a>
+                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Backup">Delete a Specific Kitten</a>
                   </li>
               </ul>
           </li>
@@ -245,227 +245,250 @@
       </div>
         <ul class="toc-footer">
             <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Qlue</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Qlue_Gopay API</p>
+<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+
+<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+
+<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
-<p>To authorize, you need to get token use this code:</p>
+<p>To authorize, use this code:</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl -X POST <span class="se">\</span>
-  http://localhost:3000/api/customers/check_in <span class="se">\</span>
-  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
-  -H <span class="s1">'content-type: application/x-www-form-urlencoded'</span> <span class="se">\ </span> 
-  -H <span class="s1">'token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImNsaWVudF9uYW1lIjoiY2FycmVmb3VyIiwiaWF0IjoxNTA2ODY1MzgxfQ.0C2GCeAxxgpb1noiywvBTIfjC-caP3GbP3-zp9P4Qgk'</span> <span class="se">\</span>
-  -d <span class="s1">'plate=B234ACV&amp;vehicle=motor'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">);</span>
+<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:3000/api/customer/check_in, {</span>
-  <span class="nl">plate</span><span class="p">:</span> <span class="s1">'[plate]'</span><span class="p">,</span>
-  <span class="nx">vehicle</span><span class="p">:</span> <span class="s1">'[vehicle_type]'</span><span class="p">,</span>
-  <span class="nx">image</span><span class="p">:</span> <span class="s1">'http://img.ur'</span>  
-<span class="p">},</span> <span class="p">{</span>
-  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">token</span><span class="p">:</span> <span class="s1">'[your_token_here]'</span>
-  <span class="p">}</span>
-<span class="p">})</span>
+<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
+curl <span class="s2">"api_endpoint_here"</span>
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
 </code></pre>
 <blockquote>
-<p>Make sure to replace <code>[your_token_here]</code> with your token.</p>
+<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
 </blockquote>
 
-<p>Qlue_Gopay API keys to allow access to the API. You can register a new token at our with this code</p>
-<pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"http://localhost:3000/api/customers/getToken?client_id=1&amp;client_name=carefour"</span>  
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">);</span>
+<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
 
-<span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:3000/api/customer/getToken, {</span>
-  <span class="nl">params</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nl">client_id</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="nl">client_name</span><span class="p">:</span> <span class="s1">'transmart harmoni'</span>
-  <span class="p">}</span>
-<span class="p">})</span>
-<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">token</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="p">...</span> <span class="p">})</span>
-<span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="nx">err</span><span class="p">)</span>
-</code></pre>
-<p>Qlue_Gopay expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
-<p><code>token: [your_token_here]</code></p>
+<p><code>Authorization: meowmeowmeow</code></p>
 
 <aside class="notice">
-You must replace <code>[your_token_here]</code> with your personal token.
+You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
-<h1 id='customer'>Customer</h1><h2 id='get-user-and-update-database-local'>Get User and update database local</h2><pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight javascript tab-javascript"><code></code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<h2 id='check-in-customer'>Check In Customer</h2><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl -X POST <span class="se">\</span>
-  http://localhost:3000/api/customers/check_in <span class="se">\</span>
-  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
-  -H <span class="s1">'content-type: application/x-www-form-urlencoded'</span> <span class="se">\ </span> 
-  -H <span class="s1">'token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImNsaWVudF9uYW1lIjoiY2FycmVmb3VyIiwiaWF0IjoxNTA2ODY1MzgxfQ.0C2GCeAxxgpb1noiywvBTIfjC-caP3GbP3-zp9P4Qgk'</span> <span class="se">\</span>
-  -d <span class="s1">'plate=B234ACV&amp;vehicle=motor&amp;image=http://img.ur'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">);</span>
-
-<span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:3000/api/customer/check_in, {</span>
-  <span class="nl">plate</span><span class="p">:</span> <span class="s1">'B234ACV'</span><span class="p">,</span>
-  <span class="nx">image</span><span class="p">:</span> <span class="s1">'http://img.ur'</span><span class="p">,</span>
-  <span class="nx">vehicle</span><span class="p">:</span> <span class="s1">'motor'</span>
-<span class="p">},</span> <span class="p">{</span>
+<h1 id='backup'>Backup</h1><h2 id='create-backups'>Create Backups</h2><pre class="highlight shell tab-shell"><code>curl -XPOST <span class="s2">"http://{{ qlue-cloud-uri }}/v1/backup"</span>
+  -H <span class="s2">"Authorization: Bearer {{ token }}"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">)</span>
+<span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">qlue</span><span class="o">-</span><span class="nx">cloud</span><span class="o">-</span><span class="nx">uri</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">token</span><span class="p">:</span> <span class="s1">'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImNsaWVudF9uYW1lIjoiY2FycmVmb3VyIiwiaWF0IjoxNTA2ODY1MzgxfQ.0C2GCeAxxgpb1noiywvBTIfjC-caP3GbP3-zp9P4Qgk'</span>
+    <span class="na">Authorization</span><span class="p">:</span> <span class="s1">'Bearer {{ token }}'</span>
   <span class="p">}</span>
 <span class="p">})</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+<span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"__v"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T22:41:25.665Z"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T22:41:25.665Z"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"gopay_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"gopay_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fajarkarim"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"plate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"B234ACV"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://img.ur"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"current_balance"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"motor"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carrefour gate 1"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"registered_gopay"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"check_in"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T22:41:25.652Z"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"check_out"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59d16f15f1595c2ccb2cbfb5"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"check_out_status"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"gopay_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"req.body.gopay_id"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"plate_number"</span><span class="p">:</span><span class="s2">"req.body.plate_number"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"image_checkin"</span><span class="p">:</span><span class="s2">"req.body.image_checkin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"image_checkout"</span><span class="p">:</span><span class="s2">"req.body.image_checkout"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="s2">"req.body.vehicle"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"total_parking_bill"</span><span class="p">:</span><span class="s2">"req.body.total_parking_bill"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"park_id"</span><span class="p">:</span><span class="s2">"req.body.park_id"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gate_id"</span><span class="p">:</span><span class="s2">"req.body.gate_id"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"parking_duration"</span><span class="p">:</span><span class="s2">"req.body.parking_duration"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"check_in"</span><span class="p">:</span><span class="s2">"req.body.check_in"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"check_out"</span><span class="p">:</span><span class="s2">"req.body.check_out"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
 </span></code></pre>
-<blockquote>
-<p>if gopay account not found will returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NOT FOUND"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your Gopay Account was not found"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"__v"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-02T23:28:00.620Z"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-02T23:28:00.620Z"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"plate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AAAAA"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobil"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"check_in"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-02T23:28:00.618Z"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59d2cb80bbb8311ff0075b55"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"check_out_status"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"check_out"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"pay_with_gopay"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"registered_gopay"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre><h3 id='http-request'>HTTP Request</h3>
-<p><code>POST http://api_endpoint_here/api/check_in</code></p>
+<p>This endpoint retrieves all kittens.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET http://{{ qlue-cloud-uri }}/v1/backup</code></p>
 <h3 id='body-parameters'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Require</th>
+<th>Required</th>
+<th>type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>plate</td>
-<td>true</td>
-<td>plate from detection nodeflux</td>
+<td>gopay_id</td>
+<td>optional</td>
+<td>string</td>
+<td>gopay id from gopay server</td>
 </tr>
 <tr>
-<td>image</td>
+<td>plate_number</td>
 <td>true</td>
-<td>image from nodeflux</td>
+<td>string</td>
+<td>plate number of vehicle</td>
+</tr>
+<tr>
+<td>image_checkin</td>
+<td>true</td>
+<td>string</td>
+<td>path uploaded image checkin to cloud</td>
+</tr>
+<tr>
+<td>image_checkout</td>
+<td>true</td>
+<td>string</td>
+<td>path uploaded image chekout to cloud</td>
 </tr>
 <tr>
 <td>vehicle</td>
 <td>true</td>
-<td>vehicle type example &#39;mobil or motor&#39; from nodeflux</td>
+<td>string</td>
+<td>vehicle checkin and checkout exp car motorcycle</td>
+</tr>
+<tr>
+<td>total_parking_bill</td>
+<td>true</td>
+<td>number</td>
+<td>total parking bill from CP server</td>
+</tr>
+<tr>
+<td>park_id</td>
+<td>true</td>
+<td>string</td>
+<td>park id which vehicle parked</td>
+</tr>
+<tr>
+<td>gate_id</td>
+<td>optional</td>
+<td>string</td>
+<td>gate_id which park checkin</td>
+</tr>
+<tr>
+<td>parking_duration</td>
+<td>true</td>
+<td>string</td>
+<td>parking duration from cepe server</td>
+</tr>
+<tr>
+<td>check_in</td>
+<td>true</td>
+<td>date</td>
+<td>date when check in</td>
+</tr>
+<tr>
+<td>check_out</td>
+<td>true</td>
+<td>date</td>
+<td>date when checkout</td>
 </tr>
 </tbody></table>
 
 <aside class="success">
-Remember — always include token in headers
+Remember — a happy kitten is an authenticated kitten!
 </aside>
-<h2 id='check-out-customer'>Check Out Customer</h2><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl -X PUT <span class="se">\</span>
-  http://localhost:3000/api/customers/check_out <span class="se">\</span>
-  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
-  -H <span class="s1">'content-type: application/x-www-form-urlencoded'</span> <span class="se">\</span>
-  -H <span class="s1">'postman-token: 55eebb84-0cce-c5f4-588b-6f576064f7cc'</span> <span class="se">\</span>
-  -H <span class="s1">'token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImNsaWVudF9uYW1lIjoiY2FycmVmb3VyIiwiaWF0IjoxNTA2ODY1MzgxfQ.0C2GCeAxxgpb1noiywvBTIfjC-caP3GbP3-zp9P4Qgk'</span> <span class="se">\</span>
-  -d <span class="s1">'plate=B234ACV&amp;payed=3000'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">);</span>
+<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:3000/api/customer/check_out, {</span>
-  <span class="nl">plate</span><span class="p">:</span> <span class="s1">'B234ACV'</span><span class="p">,</span>
-  <span class="nx">payed</span><span class="p">:</span> <span class="mi">3000</span>
-<span class="p">},</span> <span class="p">{</span>
-  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">token</span><span class="p">:</span> <span class="s1">'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOjEsImNsaWVudF9uYW1lIjoiY2FycmVmb3VyIiwiaWF0IjoxNTA2ODY1MzgxfQ.0C2GCeAxxgpb1noiywvBTIfjC-caP3GbP3-zp9P4Qgk'</span>
-  <span class="p">}</span>
-<span class="p">})</span>
+<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
+<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59d15efcaa54dd04e5779a2b"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T22:07:14.463Z"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T21:32:44.698Z"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"gopay_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Karim"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"plate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"B234ACV"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"current_balance"</span><span class="p">:</span><span class="w"> </span><span class="mi">7000</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"motor"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"check_in"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T21:32:44.696Z"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"check_out"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-10-01T22:07:14.451Z"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"__v"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"check_out_status"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<blockquote>
-<p>If account balance is not enough will return JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ACCOUNT BALANCE NOT ENOUGH"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your account balance is not enough"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre><h3 id='http-request-2'>HTTP Request</h3>
-<p><code>PUT http://api_endpoint_here/api/check_out</code></p>
-<h3 id='body-parameters-2'>Body Parameters</h3>
+<p>This endpoint retrieves a specific kitten.</p>
+
+<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
+<h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Require</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>plate</td>
-<td>true</td>
-<td>plate from detection</td>
-</tr>
-<tr>
-<td>payed</td>
-<td>true</td>
-<td>parking bill</td>
+<td>ID</td>
+<td>The ID of the kitten to retrieve</td>
 </tr>
 </tbody></table>
+<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<aside class="success">
-Remember — always include token in headers
-</aside>
+<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
+<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
+  -X DELETE
+  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint retrieves a specific kitten.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the kitten to delete</td>
+</tr>
+</tbody></table>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
 
